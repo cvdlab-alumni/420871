@@ -4,6 +4,8 @@ from pyplasm import T
 from pyplasm import VIEW
 from pyplasm import Q
 from pyplasm import PROD
+from pyplasm import SKELETON
+
 
 # strati grezzi senza colore e senza traslazione
 # e' stato aggiunto lo spessore
@@ -22,5 +24,6 @@ floor4 = T([1,2,3])([4,4,4])(floor4_grezzo)
 
 finale = STRUCT([floor0, floor1, floor2, floor3, floor4])
 
-VIEW(finale)
+VIEW(SKELETON(1)(finale))
+#VIEW(finale)
 
