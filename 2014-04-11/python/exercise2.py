@@ -12,6 +12,7 @@ from pyplasm import COLOR
 from pyplasm import Color4f
 from pyplasm import PROD
 from pyplasm import Q
+from pyplasm import SKELETON
 
 # funzione per avere i colori correttamente in rgb
 def color2rgb(r,g,b):
@@ -40,5 +41,6 @@ floor4 = COLOR(color)(T([1,2,3])([4,4,4])(floor4_grezzo))
 
 finale = STRUCT([pavimento, floor0, floor1, floor2, floor3, floor4])
 
-VIEW(finale)
+VIEW(SKELETON(1)(finale))
+#VIEW(finale)
 
