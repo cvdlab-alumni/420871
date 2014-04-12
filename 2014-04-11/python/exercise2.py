@@ -1,3 +1,7 @@
+"""  La piramide scelta (piramide di Djoser) e' per sua natura sprovvista di porte e finestre,
+per tanto sono state omesse per rispecchiare, il piu' possibile la piramide raffigurata nelle foto
+presenti nella cartella images di questo homework """
+
 from pyplasm import CUBOID
 from pyplasm import SPHERE
 from pyplasm import CYLINDER
