@@ -13,29 +13,30 @@ def color2rgb(r,g,b):
 
 # strati grezzi senza colore e senza traslazione
 # e' stato aggiunto lo spessore
+pavimento_grezzo = (T([1,2,3])([-6,-10,0])(CUBOID([20,30])))
 floor0_grezzo = PROD([CUBOID([10,10]),Q(1)])
 floor1_grezzo = PROD([CUBOID([8,8]),Q(1)])
 floor2_grezzo = PROD([CUBOID([6,6]),Q(1)])
 floor3_grezzo = PROD([CUBOID([4,4]),Q(1)])
 floor4_grezzo = PROD([CUBOID([2,2]),Q(1)])
 
+color_pavimento = color2rgb(152,105,53)
+pavimento = COLOR(color_pavimento)(pavimento_grezzo)
+
 # strati traslati e colorati
-color0 = color2rgb(51,25,0)
-floor0 = COLOR(color0)(floor0_grezzo)
+color = color2rgb(255,201,99)
 
-color1 = color2rgb(102,51,0)
-floor1 = COLOR(color1)(T([1,2,3])([1,1,1])(floor1_grezzo))
+floor0 = COLOR(color)(floor0_grezzo)
 
-color2 = color2rgb(153,76,0)
-floor2 = COLOR(color1)(T([1,2,3])([2,2,2])(floor2_grezzo))
+floor1 = COLOR(color)(T([1,2,3])([1,1,1])(floor1_grezzo))
 
-color3 = color2rgb(204,102,0)
-floor3 = COLOR(color3)(T([1,2,3])([3,3,3])(floor3_grezzo))
+floor2 = COLOR(color)(T([1,2,3])([2,2,2])(floor2_grezzo))
 
-color4 = color2rgb(255,128,0)
-floor4 = COLOR(color4)(T([1,2,3])([4,4,4])(floor4_grezzo))
+floor3 = COLOR(color)(T([1,2,3])([3,3,3])(floor3_grezzo))
 
-finale = STRUCT([floor0_grezzo, floor1_grezzo, floor2_grezzo, floor3_grezzo, floor4_grezzo])
+floor4 = COLOR(color)(T([1,2,3])([4,4,4])(floor4_grezzo))
+
+finale = STRUCT([pavimento, floor0, floor1, floor2, floor3, floor4])
 
 VIEW(finale)
 
