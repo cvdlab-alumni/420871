@@ -23,6 +23,13 @@ def automate_merging(master, mergingWith, diagram):
 			master = diagram2cell(master, diagram, mergingWith[k])
 
 
+def automate_numbering(master):
+	V,CV = master
+	hpc = SKEL_1(STRUCT(MKPOLS(master)))
+	hpc = cellNumbering (master,hpc)(range(len(CV)),YELLOW,1)
+	return hpc
+	
+
 def automate_removing(master, removingFrom):
 	V,CV = master
 	sorting = sorted(removingFrom, reverse=False)
