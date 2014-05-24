@@ -17,89 +17,288 @@ from sysml import *
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 
-pavimento = CUBOID([10,6.8,0.1])
+master = assemblyDiagramInit([15,13,2])([[0.3,2,0.3,1,0.3,2,0.3,1,0.3,1,0.3,2,0.3,0.5,0.3], [0.3,2,0.3,1.5,0.3,0.5,0.3,1,0.3,1.7,0.3,1.3,0.3], [0.1,3]])
+V,CV = master
 
-appartamento = assemblyDiagramInit([13,11,1])([[0.3,2,0.3,1,0.3,2,0.3,1,0.3,1,0.3,1,0.3],[.3,1,.3,1,.3,1,.3,1,0.3,1,0.3],[2]])
-V,CV = appartamento
-
-apt_hpc = SKEL_1(STRUCT(MKPOLS(appartamento)))
-apt_hpc = cellNumbering (appartamento,apt_hpc)(range(len(CV)),YELLOW,0.5)
-#VIEW(apt_hpc)
-
-c1 = CUBOID([2, 0.3, 2])
-c2 = T([1,3])([0.7,0.5])(CUBOID([0.6, 0.3, 1]))
-finestra1 = DIFF([c1,c2])
-finestra1 = STRUCT([finestra1])
-
-# di 45 gradi
-c1 = CUBOID([0.3, 2, 2])
-c2 = T([2,3])([0.7,0.5])(CUBOID([0.3, 0.6, 1]))
-finestra_girata = DIFF([c1,c2])
-
-# tolgo i muri
-toRemove = [17,87,73,74,75,76,81,105,107,117,118,119,126,129,85,113,111,89,0,1,2,3,11,12,13,149,7,8,9,10,21,19,32,31,30,29,41,43,54,65,53,52,51,63,61,27,45,46,47,35,57,33,37,69,79,91,93,115,
-82,84,86,704,106,108,128,130,104,78,80,100,102,124,122,20,18,20,16,14,42,40,62,60,64,38,58,56,34,36,
-120,131,133,134]
-
-apt_no_muri = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
-
-apt_no_muri_3D = (STRUCT(MKPOLS(apt_no_muri)))
-#VIEW(STRUCT([pavimento,apt_no_muri_3D]))
-
-apt_no_muri_hpc_skel = SKEL_1(STRUCT(MKPOLS(apt_no_muri)))
-apt_no_muri_hpc_skel = cellNumbering (appartamento,apt_no_muri_hpc_skel)(range(len(CV)),YELLOW,1)
-
-appartamento_finale = STRUCT([pavimento,T([1,2])([0.3,3.9])(finestra1),T([1,2])([7.8,6.5])(finestra1),T(1)(9.8)(finestra_girata),apt_no_muri_3D])
-VIEW(appartamento_finale)
-VIEW(apt_no_muri_hpc_skel)
-
-"""
-NON FUNZIONA!
-
-# rimuovo porta muro 33
-
-toMerge = 33
-cell = MKPOL([appartamento[0],[[v+1 for v in  appartamento[1][toMerge]]],None])
-#VIEW(STRUCT([apt_no_muri_hpc_skel,cell]))
-
-diagram = assemblyDiagramInit([3,1,1])([[0.2,0.6,0.2],[0.3],[1]])
-apt_no_muri = diagram2cell(diagram,apt_no_muri,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(apt_no_muri)))
-hpc = cellNumbering (apt_no_muri,hpc)(range(len(apt_no_muri[1])),YELLOW,1)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(CV)),YELLOW,1)
 #VIEW(hpc)
 
-toRemove = [11]
-apt_no_muri = apt_no_muri[0], [cell for k,cell in enumerate(apt_no_muri[1]) if not (k in toRemove)]
-DRAW(apt_no_muri)
 
-# rimuovo porta muro 33
-toMerge = 37
-cell = MKPOL([appartamento[0],[[v+1 for v in  appartamento[1][toMerge]]],None])
-VIEW(STRUCT([apt_no_muri_hpc_skel,cell]))
+# walls removing
+toRemove =[0,1,2,3,4,5,6,7,8,9,10,11,12,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,41,43,45,48,49,50,51,67,69,71,74,75,76,77,81,83,85,87,89,93, 95,97,100,101,102,103,107,109,111,113,115,126,127,128,129,133,135,137,139,141,144,145,146,147,148,149,150,151,152,153,154,155,
+174,175,176,177,178,179,180,181,185,200,201,202,203,204,205,206,207,338,339,340,341,342,343,344,345,346,347,348,349,350,351,
+352,353,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,
+263,237,211,289,293,267,241,297,299,301,
+189,191,193,195,197,
+305,307,309,
+331,333,335,
+357,359,361,
+279,281,283,
+245,247,249,251,253,255,257,
+]
 
-diagram = assemblyDiagramInit([3,1,1])([[0.2,0.6,0.2],[0.3],[1]])
-apt_no_muri = diagram2cell(diagram,apt_no_muri,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(apt_no_muri)))
-hpc = cellNumbering (apt_no_muri,hpc)(range(len(apt_no_muri[1])),YELLOW,1)
-VIEW(hpc)
+master = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
+#DRAW(master)
 
-toRemove = [11]
-apt_no_muri = apt_no_muri[0], [cell for k,cell in enumerate(apt_no_muri[1]) if not (k in toRemove)]
-DRAW(apt_no_muri)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
 
-# rimuovo porta muro 27
+# main door creation
+toMerge = 35
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([3,1,2])([[0.1,0.8,0.1],[.3],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+toRemove = [226]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /main door creation
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+# kitchen door
+toMerge = 41
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([3,1,2])([[0.1,0.8,0.1],[.3],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [230]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /kitchen door
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+
+# room 1 door
+toMerge = 94
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([3,1,2])([[0.1,0.8,0.1],[.3],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+toRemove = [234]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /room 1 door
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+
+# day-night door
 toMerge = 79
-cell = MKPOL([appartamento[0],[[v+1 for v in  appartamento[1][toMerge]]],None])
-VIEW(STRUCT([apt_no_muri_hpc_skel,cell]))
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
 
-diagram = assemblyDiagramInit([2,1,1])([[0.7,0.3],[0.3],[1]])
-apt_no_muri = diagram2cell(diagram,apt_no_muri,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(apt_no_muri)))
-hpc = cellNumbering (apt_no_muri,hpc)(range(len(apt_no_muri[1])),YELLOW,1)
-VIEW(hpc)
+door = assemblyDiagramInit([1,3,2])([[0.3],[0.3,0.9,0.3],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
 
-toRemove = [26]
-apt_no_muri = apt_no_muri[0], [cell for k,cell in enumerate(apt_no_muri[1]) if not (k in toRemove)]
-DRAW(apt_no_muri)
-"""
+toRemove = [238]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /day-night door
 
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+# bathroom door
+toMerge = 106
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([1,3,2])([[0.3],[0.3,0.9,0.3],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1.5)
+#VIEW(hpc)
+
+toRemove = [242]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /bathroom door
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# room-bath door
+toMerge = 154
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([1,3,2])([[0.3],[0.1,0.8,0.1],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [246]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /room-bath door
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# room2 door
+toMerge = 113
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+door = assemblyDiagramInit([1,3,2])([[0.3],[0.1,0.8,0.1],[2.2,.5]])
+master = diagram2cell(door,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [250]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /room2 door
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# kitchen window
+toMerge = 14
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([3,1,3])([[0.2,1.6,0.2],[.3],[1,1.4,.3]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [256]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /kitchen window
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# garden window
+toMerge = 70
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([3,1,2])([[0.2,1.6,0.2],[.3],[2.2,.5]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [261]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /garden window
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# bath-room window
+toMerge = 175
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([3,1,3])([[0.2,0.9,0.2],[.3],[1,1.4,.3]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [267]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /bath-room window
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# room window
+toMerge = 178
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([1,3,3])([[0.3],[0.1,1.1,0.1],[1,1.4,.3]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [274]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /room window
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# bath window
+toMerge = 181
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([1,3,3])([[0.3],[0.2,0.9,0.2],[1.8,0.6,.3]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [281]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+#DRAW(master)
+# /bath window
+
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+# bath-room window
+toMerge = 188
+cell = MKPOL([master[0],[[v+1 for v in  master[1][toMerge]]],None])
+#VIEW(STRUCT([hpc,cell]))
+
+window = assemblyDiagramInit([1,3,3])([[0.3],[0.1,0.8,0.1],[1.8,0.6,.3]])
+master = diagram2cell(window,master,toMerge)
+hpc = SKEL_1(STRUCT(MKPOLS(master)))
+hpc = cellNumbering (master,hpc)(range(len(master[1])),YELLOW,1)
+#VIEW(hpc)
+
+toRemove = [288]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+DRAW(master)
+# /bath-room window

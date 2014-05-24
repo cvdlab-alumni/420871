@@ -1,4 +1,4 @@
-# Exercise 1
+# Exercise 2
 
 """ progressive refinement of a block diagram """
 from pyplasm import *
@@ -15,54 +15,80 @@ from boolean import *
 
 from sysml import *
 
-# funzione per avere i colori correttamente in rgb
+from exercise1 import master, hpc
+
+# function to have color in RGB
 def color2rgb(r,g,b):
 	return Color4f(r/255.0,g/255.0,b/255.0,1.0)
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 
-pavimento = CUBOID([10,6.8,0.1])
-color_pavimento = color2rgb(152,105,53)
-pavimento = COLOR(color_pavimento)(pavimento)
+
+floor = CUBOID([10,6.8,0.1])
+color_floor = color2rgb(152,105,53)
+floor = COLOR(color_floor)(floor)
+
+master_3D = (STRUCT(MKPOLS(master)))
+
+color_master_3D = color2rgb(255,229,180)
+master_3D = COLOR(color_master_3D)(master_3D)
+
+# Roof creation
+roof = assemblyDiagramInit([15,13,1])([[0.3,2,0.3,1,0.3,2,0.3,1,0.3,1,0.3,2,0.3,0.5,0.3], [0.3,2,0.3,1.5,0.3,0.5,0.3,1,0.3,1.7,0.3,1.3,0.3], [0.4]])
+V,CV = roof
+
+# walls removing
+toRemove =[0,1,2,3,4,5,11,12,13,14,15,16,17,18,24,25,37,38,50,51,63,64,76,77,89,90,102,103,
+		   182,183,184,185,186,187,188,189]
+
+roof = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
+roof_3D = T([3])([21.7])(STRUCT(MKPOLS(roof)))
+
+# roof coloring
+color_roof = color2rgb(128,0,0)
+roof_3D = COLOR(color_roof)(roof_3D)
+# /Roof creation
+
+floors = [T(3)(3.1),master_3D]
+palace = STRUCT(NN(6)(floors))
 
 
-appartamento = assemblyDiagramInit([13,11,1])([[0.3,2,0.3,1,0.3,2,0.3,1,0.3,1,0.3,1,0.3],[.3,1,.3,1,.3,1,.3,1,0.3,1,0.3],[2]])
-V,CV = appartamento
+palace = STRUCT([palace, roof_3D])
 
-apt_hpc = SKEL_1(STRUCT(MKPOLS(appartamento)))
-apt_hpc = cellNumbering (appartamento,apt_hpc)(range(len(CV)),YELLOW,0.5)
-
-
-c1 = CUBOID([2, 0.3, 2])
-c2 = T([1,3])([0.7,0.5])(CUBOID([0.6, 0.3, 1]))
-finestra1 = DIFF([c1,c2])
-
-# di 45 gradi
-c1 = CUBOID([0.3, 2, 2])
-c2 = T([2,3])([0.7,0.5])(CUBOID([0.3, 0.6, 1]))
-finestra_girata = DIFF([c1,c2])
+floor = CUBOID([15,13,0.5])
+palace = STRUCT([T([1,3])([2,-2.5])(palace), floor])
 
 
-# tolgo i muri
-toRemove = [17,87,73,74,75,76,81,105,107,117,118,119,126,129,85,113,111,89,0,1,2,3,11,12,13,149,7,8,9,10,21,19,32,31,30,29,41,43,54,65,53,52,51,63,61,27,45,46,47,35,57,33,37,69,79,91,93,115,
-82,84,86,704,106,108,128,130,104,78,80,100,102,124,122,20,18,20,16,14,42,40,62,60,64,38,58,56,34,36,
-120,131,133,134,132]
+# Pole
+pole = CYLINDER([.2,3.3])(32)
+color_pole = color2rgb(67,67,67)
+pole = COLOR(color_pole)(pole)
+# /Pole
 
-apt_no_muri = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
+# Light
+light = SPHERE(.5)([32,32])
+light = T(3)(3)(light)
+color_light = color2rgb(245,253,191)
+light = COLOR(color_light)(light)
+# /Light
 
-apt_no_muri_3D = (STRUCT(MKPOLS(apt_no_muri)))
-#VIEW(STRUCT([pavimento,apt_no_muri_3D]))
+# Streetlight
+streetlight = STRUCT([pole,light])
 
-appartamento_finale = STRUCT([pavimento,T([1,2])([0.3,3.9])(finestra1),T([1,2])([7.8,6.5])(finestra1),T(1)(9.8)(finestra_girata),apt_no_muri_3D])
+# streetlight 1
+streetlight_1 = T([1,2])([2,2])(streetlight)
 
-piani_appartamenti = [T(3)(2.1),appartamento_finale]
+# streetlight 2
+streetlight_2 = T([1,2])([13, 11.5])(streetlight)
 
-tetto = T([1,2,3])([-1,-1,18.5])(CUBOID([12,9,0.5]))
-color_tetto = color2rgb(128,0,0)
-tetto = COLOR(color_tetto)(tetto)
+# streetlight 3
+streetlight_3 = T([1,2])([2, 11.5])(streetlight)
 
-palazzo = STRUCT(NN(8)(piani_appartamenti))
-palazzo = STRUCT([palazzo, tetto])
+# Streetlighth
+streetlights = STRUCT([streetlight_1,streetlight_2,streetlight_3])
 
-VIEW(palazzo)
+palace = STRUCT([palace, streetlights])
+
+VIEW(palace)
+
 
