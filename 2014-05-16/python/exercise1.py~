@@ -54,35 +54,6 @@ toRemove =[0,1,2,3,4,5,6,7,8,9,10,11,12,22,23,24,25,26,27,28,29,30,31,32,33,34,3
 245,247,249,251,253,255,257,
 ]
 
-
-### ESPORTAZIONE
-
-solidCV = [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
-#DRAW((master[0],solidCV))
-
-exteriorCV =  [cell for k,cell in enumerate(master[1]) if k in toRemove]
-exteriorCV += exteriorCells(master)
-CV = solidCV + exteriorCV
-V = master[0]
-FV = [f for f in larFacets((V,CV),3,len(exteriorCV))[1] if len(f) >= 4]
-#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
-
-BF = boundaryCells(solidCV,FV)
-boundaryFaces = [FV[face] for face in BF]
-B_Rep = V,boundaryFaces
-#VIEW(EXPLODE(1.1,1.1,1.1)(MKPOLS(B_Rep)))
-#VIEW(STRUCT(MKPOLS(B_Rep)))
-
-
-verts, triangles = quads2tria(B_Rep)
-B_Rep = V,boundaryFaces
-#VIEW(EXPLODE(1.1,1.1,1.1)(MKPOLS((verts, triangles))))
-#VIEW(STRUCT(MKPOLS((verts, triangles))))
-
-# ESPORTO
-objExporter((verts, triangles), 'export.obj')
-
-"""
 master = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
 #DRAW(master)
 
@@ -353,7 +324,7 @@ DRAW(master)/
 solidCV = [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
 #DRAW((master[0],solidCV))
 
-exteriorCV =  [cell for k,cell in enumerate(master[1]) if k in toRemove]
+exteriorCV =  [cell for k,cell in enumerate(master[1]) if k in emptyChain]
 exteriorCV += exteriorCells(master)
 CV = solidCV + exteriorCV
 V = master[0]
@@ -374,4 +345,3 @@ B_Rep = V,boundaryFaces
 
 # ESPORTO
 #objExporter((verts, triangles), 'export.obj')
-"""
