@@ -86,7 +86,7 @@
 			apartment.add(fencepost_mesh);
 			
 			object.rotation.set(Math.PI, -Math.PI/2, Math.PI);
-			object.position.set(-0.5, 0.8, 3.7);
+			object.position.set(-1.85, 0.8, 3.7);
 		});
 						
 		fencepost.load(
@@ -95,7 +95,7 @@
 			{side: THREE.DoubleSide}
 		);
 		
-		// FENCE ENTRY DX
+		// FENCE ENTRY SX
 		fencepost = new THREE.OBJMTLLoader();
 		fencepost.addEventListener('load', function (event)
 		{
@@ -107,7 +107,7 @@
 			apartment.add(fencepost_mesh);
 			
 			object.rotation.set(Math.PI, -Math.PI/2, Math.PI);
-			object.position.set(-5, 0.8, 3.7);
+			object.position.set(-5.37, 0.8, 3.7);
 		});
 						
 		fencepost.load(
@@ -605,4 +605,132 @@
 			'assets/objs/garden/borderfence-small/borderfence-small.mtl', 
 			{side: THREE.DoubleSide}
 		);								
+		
+		
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/3, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(5.15, 0.6, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-main/borderfence-main.obj', 
+			'assets/objs/garden/borderfence-main/borderfence-main.mtl', 
+			{side: THREE.DoubleSide}
+		);
+
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/3, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(3.15, 0.6, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-main/borderfence-main.obj', 
+			'assets/objs/garden/borderfence-main/borderfence-main.mtl', 
+			{side: THREE.DoubleSide}
+		);
+
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/3, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(1.15, 0.6, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-main/borderfence-main.obj', 
+			'assets/objs/garden/borderfence-main/borderfence-main.mtl', 
+			{side: THREE.DoubleSide}
+		);			
+
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/3, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(-0.8, 0.6, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-main/borderfence-main.obj', 
+			'assets/objs/garden/borderfence-main/borderfence-main.mtl', 
+			{side: THREE.DoubleSide}
+		);
+
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/3, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(-7.3, 0.6, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-main/borderfence-main.obj', 
+			'assets/objs/garden/borderfence-main/borderfence-main.mtl', 
+			{side: THREE.DoubleSide}
+		);		
+
+		// BORDERFENCE ENTRY
+		borderfence = new THREE.OBJMTLLoader();
+		borderfence.addEventListener('load', function (event)
+		{
+		
+			object = event.content;
+			
+			object.scale.set(1/5, 1/3, 1/3);
+			borderfence_mesh = object;
+			apartment.add(borderfence_mesh);
+			
+			object.rotation.set(Math.PI, Math.PI, Math.PI);
+			object.position.set(-4.25, 0.615, 2.4);
+		});
+						
+		borderfence.load(
+			'assets/objs/garden/borderfence-small/borderfence-small.obj', 
+			'assets/objs/garden/borderfence-small/borderfence-small.mtl', 
+			{side: THREE.DoubleSide}
+		);				
+		
 	}
