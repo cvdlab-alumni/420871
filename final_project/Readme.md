@@ -52,4 +52,4 @@ Animations:
 
 Seedling Flat:
 ==================
-* [seedling] (img/piantina.png)
+* [seedling] (assets/img/piantina.png)
