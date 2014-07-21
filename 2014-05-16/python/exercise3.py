@@ -36,7 +36,7 @@ def automate_removing(master, removingFrom):
 	for n in range(len)(removingFrom):
 		if removingFrom[n] in CV:
 			# memorizzo il valore da rimuovere in una lista temporanea
-			2remove = [removingFrom[n]]
-			master = V,[cell for k,cell in enumerate(CV) if not (k in 2remove)]
+			toRemove = [removingFrom[n]]
+			master = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
 	return master
 		

@@ -15,7 +15,7 @@ from boolean import *
 
 from sysml import *
 
-from exercise1 import master, hpc
+from exercise1_with_toRemove import master, hpc
 
 # function to have color in RGB
 def color2rgb(r,g,b):
