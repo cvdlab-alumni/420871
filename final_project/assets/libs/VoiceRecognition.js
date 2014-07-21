@@ -6,7 +6,11 @@
 	*/
 	
 	// people I know! :D
-	people = ['io', 'paoluzzi', 'spini', 'marino', 'biagio'];
+	people = ['io', 
+				'paoluzzi', 'alberto', 'alberto paoluzzi', 
+				'spini', 'federico', 'federico spini',
+				'marino', 'enrico', 'enrico marino',
+				'biagio'];
 	
 	// callback is the result 2 return
 	function callVoiceRecognition(callback)	
