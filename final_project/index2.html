@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+  	    <meta charset="utf-8">
+        <title>Final Project - 3D Apartment</title>
+	    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+	</head>
+	<body>
+    <div id="blocker">
+
+      <div id="instructions">
+        <span style="font-size:40px">Click to play</span>
+        <br />
+        (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+      </div>
+
+    </div>
+        <div id="pointer"></div>
+        <div id="instructions2esc">ESC per uscire</div>
+		<div id="plerror">Pointer Lock ERROR!</div>
+        
+        <!-- JavaScript libraries -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+		<script src="assets/libs/TrackballControls.js"></script>
+        <script src="assets/libs/OBJLoader.js"></script>
+		<script type="text/javascript" src="assets/libs/MTLLoader.js"></script> 
+		<script type="text/javascript" src="assets/libs/OBJMTLLoader.js"></script>
+		<script src="assets/libs/PointerLockControls.js"></script>
+        <script src="assets/libs/pointLockControls_func.js"></script>
+        <script type="text/javascript" src="assets/libs/createDoor.js"></script>
+        <script type="text/javascript" src="assets/libs/createWindow.js"></script>        
+        <script type="text/javascript" src="assets/libs/interact_functions.js"></script>   
+        <!-- voice LIBS -->
+        <script type="text/javascript" src="assets/libs/VoiceRecognition.js"></script>    
+        <script type="text/javascript" src="assets/libs/SpeechSynthesizer.js"></script> 
+        <!-- DECORATION LIBS -->
+        <script type="text/javascript" src="assets/libs/kitchenDecoration.js"></script>
+        <script type="text/javascript" src="assets/libs/room2Decoration.js"></script>
+        <script type="text/javascript" src="assets/libs/room1Decoration.js"></script>
+        <script type="text/javascript" src="assets/libs/livingDecoration.js"></script>
+        <script type="text/javascript" src="assets/libs/bathroomDecoration.js"></script>
+        <script type="text/javascript" src="assets/libs/bathInRoomDecoration.js"></script>                   
+		<script type="text/javascript" src="assets/libs/wallsDecoration.js"></script>
+		<script type="text/javascript" src="assets/libs/gardenDecoration.js"></script>            
+        <!-- DOORS, WINDOWS, FLOORS CREATION -->
+		<script type="text/javascript" src="assets/libs/doorsCreation.js"></script>
+		<script type="text/javascript" src="assets/libs/windowsCreation.js"></script>
+		<script type="text/javascript" src="assets/libs/floorsCreation.js"></script>
+		<script type="text/javascript" src="assets/libs/apartmentCreation.js"></script>        
+        <!-- Javascript code that runs our Three.js examples --> 
+        <script>
+		var ray, controls, webGLRenderer, trackballControls;
+		
+		var scene, camera, projector, objects;
+		
+		var toIntersect = [];
+		
+		
+		  function init()
+		  {
+			scene = new THREE.Scene();
+            
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+			
+			FPenabled = false;
+			controls = new THREE.Object3D();
+			objects = [];
+			rayMove = new THREE.Raycaster();
+			rayMove.ray.direction.set(0, 1, 0);
+
+			trackballControls = new THREE.TrackballControls(camera);	  
+			
+			var axisHelper = new THREE.AxisHelper(3);
+			//scene.add(axisHelper);
+			
+			var ambiLight = new THREE.AmbientLight(0x242424)
+			scene.add(ambiLight);
+			
+			var light = new THREE.SpotLight();
+			light.position.set(0, 50, 30);
+			light.intensity = 1.2;
+			scene.add(light);	
+			
+			controls = new THREE.PointerLockControls( camera );
+			scene.add( controls.getObject() );
+	
+			ray = new THREE.Raycaster();
+			ray.ray.direction.set( 0, -1, 0 );									
+          
+            // create a render and set the size
+            webGLRenderer = new THREE.WebGLRenderer();
+            webGLRenderer.setClearColor(0xEEEEEE, 1.0);
+            webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+			// add the output of the renderer to the html element
+			$('body').append(webGLRenderer.domElement);			
+					
+			// position and point the camera to the center of the scene
+			camera.position.x = 00;
+			camera.position.y = 15;
+			camera.position.z = 13;
+			camera.lookAt(new THREE.Vector3(0, 1, 0));
+			
+			/* <CLICK_INTERCEPTING> */
+			projector = new THREE.Projector();
+			document.addEventListener('mousedown', onDocumentMouseDown, false);
+			/* </CLICK_INTERCEPTING> */			
+			
+			instructions.addEventListener( 'click', takeATour, false);
+
+			apartment = new THREE.Object3D();
+			apartment.position.set(0, 8.2, 0);
+
+			createApartment();
+
+			decorateWalls();												
+
+			decorateLiving();					
+
+			decorateKitchen();		
+
+			decorateRoom2();
+
+			decorateRoom1();
+
+			decorateBathroom();
+
+			decorateBathInRoom();
+			
+			decorateGarden();			
+
+			createAllDoors();
+
+			createAllWindows();
+
+			createAllFloors();
+
+
+			window.addEventListener('resize', onWindowResize, false);
+		  }
+
+		
+        // once everything is loaded, we run our Three.js stuff.
+        $(function () 
+        {
+			init();
+			animate();
+		});
+
+		function animate() 
+		{
+			// render using requestAnimationFrame
+			requestAnimationFrame( animate );				
+
+			trackballControls.update();
+			
+			// check if 'video' var is defined
+			if(typeof video != 'undefined')
+			{
+				if (video.readyState === video.HAVE_ENOUGH_DATA) {
+					if (texture) texture.needsUpdate = true;
+				}			
+			}
+
+			controls.update();
+			webGLRenderer.render(scene, camera);
+		}
+
+		function onWindowResize() 
+		{
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			webGLRenderer.setSize( window.innerWidth, window.innerHeight );
+		}
+
+		function onDocumentMouseDown(event) 
+		{
+			event.preventDefault();
+			var vector = new THREE.Vector3(0, 0, 2);
+			projector.unprojectVector(vector, camera);
+			var raycaster = new THREE.Raycaster(vector, controls.getDirection(new THREE.Vector3(0, 0, 0)).clone());
+	
+			var intersects = raycaster.intersectObjects([ 
+					entrydoor_node.children[0], kitchendoor_node.children[0], gardendoor_node_sx.children[0], gardendoor_node_dx.children[0], room1door_node.children[0], daynightDoor_node.children[0], bathroom_node.children[0], bathroomInRoom_node.children[0], room2_node.children[0],
+					kitchenWindow_sx_node.children[0], kitchenWindow_dx_node.children[0], room1Window_sx_node.children[0], room1Window_dx_node.children[0], room2Window_sx_node.children[0], room2Window_dx_node.children[0], bathroomWindow_node.children[0], bathInRoomWindow_node.children[0], bedside_lamp_switch.children[0], living_lamp_switch.children[0], room2_bedside_lamp_switch.children[0], wall_spotlight_switch.children[0], fluorescent_strip_switch.children[0], 
+					middle_C_switch.children[0], middle_D_switch.children[0], middle_E_switch.children[0], middle_F_switch.children[0], middle_G_switch.children[0], middle_A_switch.children[0], middle_B_switch.children[0], demo_switch.children[0], tv_switch.children[0]
+					 ]);
+					 
+			if (intersects.length > 0) 
+			{
+				intersects[0].object.parent.interact();
+			}
+		}
+		
+		</script>  
+	</body>
+</html>
+
