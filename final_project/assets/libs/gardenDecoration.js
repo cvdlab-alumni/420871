@@ -2,6 +2,7 @@
 	{
 		// garden floor
 		garden_tex = THREE.ImageUtils.loadTexture("assets/textures/general/grass_small.jpg")
+		garden_tex.wrapS = garden_tex.wrapT = THREE.RepeatWrapping;
 		garden_plane = new THREE.Mesh(
 			new THREE.CubeGeometry(15, 13, 0.05, 30), 
 			new THREE.MeshPhongMaterial({color: 0x3c3c3c, map: garden_tex})

@@ -44,6 +44,28 @@
 				{side: THREE.DoubleSide}
 			);
 			
+			apples = new THREE.OBJMTLLoader();
+			apples.addEventListener('load', function (event)
+			{
+			
+				object = event.content;
+				
+				object.scale.set(1/100, 1/100, 1/100);
+				table_mesh = object;
+				apartment.add(table_mesh);
+				
+				object.rotation.set(Math.PI, -Math.PI/2, Math.PI);
+				
+				object.position.set(-2.3, 0.9, -2.2);
+				
+			});
+				
+			apples.load(
+				'assets/objs/apples/apples.obj', 
+				'assets/objs/apples/apples.mtl', 
+				{side: THREE.DoubleSide}
+			);			
+			
 			
 			tv_support = new THREE.OBJMTLLoader();
 			tv_support.addEventListener('load', function (event)
